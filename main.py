@@ -12,7 +12,13 @@ class App:
         pass
         
     def run(self):
-        pass
+        while True:
+            self.update()
+            self.draw()
+            
+        [exit() for i in pg.event.get() if i.type == pg.QUIT]
+        self.clock.tick(60)
+        pg.display.set_caption(f'FPS: {self.clock.get_fps()}')
         
 if __name__ == '__main__':
     app = App()
