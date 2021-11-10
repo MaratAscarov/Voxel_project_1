@@ -1,4 +1,5 @@
 import pygame as pg
+from player import Player
 
 class App:
     def __init__(self):
