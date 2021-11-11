@@ -5,7 +5,7 @@ from voxel_render import VoxelRender
 class App:
     def __init__(self):
         self.res = self.width, self.height = (800, 450)
-        
+        self.screen = pg.display.set_mode(self.res)
         
     def update(self):
         pass
