@@ -1,5 +1,6 @@
 import pygame as pg
 from player import Player
+from voxel_render import VoxelRender
 
 class App:
     def __init__(self):
