@@ -6,12 +6,19 @@ class App:
     def __init__(self):
         self.res = self.width, self.height = (800, 450)
         self.screen = pg.display.set_mode(self.res)
+        self.clock = pg.time.Clock()
+        self.player = Player()
+        self.voxel_render = VoxelRender(self)
+        
+        
         
     def update(self):
-        pass
+        self.player.update()
+        self.voxel_render.update()
         
     def draw(self):
-        pass
+        self.voxel_render.draw()
+        pg.display.flip()
         
     def run(self):
         while True:

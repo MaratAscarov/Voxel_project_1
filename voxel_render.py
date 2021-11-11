@@ -1,6 +1,6 @@
 import pygame as pg
 import numpy as np
-from numba as njit
+from numba import njit
 import math
 
 class VoxelRender:
