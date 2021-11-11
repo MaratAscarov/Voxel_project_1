@@ -20,5 +20,5 @@ class VoxelRender:
         pass
     
     def draw(self):
-        pass
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))
         
