@@ -4,7 +4,7 @@ from voxel_render import VoxelRender
 
 class App:
     def __init__(self):
-        pass
+        self.res = self.width, self.height = (800, 450)
         
     def update(self):
         pass
