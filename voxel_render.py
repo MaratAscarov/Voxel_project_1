@@ -20,14 +20,39 @@ class VoxelRender:
     def update(self):
         # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 1.
         # Медленный способ.
+        '''
         x = random.randint(0, self.app.width - 1)
         y = random.randint(0, self.app.height - 1)
+        
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
         color = (r, g, b)        
         self.screen_array[x, y] = color
+        '''
         #-------------------------------------------------------------------
+        
+        # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 2.
+        # Медленный способ(Чуть быстрее первого варианта).
+        '''
+        n, m = self.app.height, self.app.width
+        masScreen = [[random.randint(1, 10) for j in range(m)] for i in range(n)]
+
+        for i in range(0, self.app.height):
+            for j in range(0, self.app.width):
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                color = (r, g, b)
+                masScreen[i][j] = color     
+        for i in range(0, self.app.height):
+            for j in range(0, self.app.width):
+                self.screen_array[j, i] = masScreen[i][j]
+        '''
+        
+        #-------------------------------------------------------------------
+        
+        
         
         # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 2.
         # Быстрый способ.
