@@ -15,10 +15,11 @@ class VoxelRender:
         self.ray_distance = 2000
         self.scale_height = 620
         self.screen_array = np.full((app.width, app.height, 3), (0, 0, 0))
+        self.screen_array2 = np.full((app.width, app.height), (10))
         
     
     def update(self):
-        # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 1.
+        # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
         # Медленный способ.
         '''
         x = random.randint(0, self.app.width - 1)
@@ -32,8 +33,8 @@ class VoxelRender:
         '''
         #-------------------------------------------------------------------
         
-        # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 2.
-        # Медленный способ(Чуть быстрее первого варианта).
+        # Заполнение экрана случайными цветами каждого пиксела. Вариант 2.
+        # Медленный способ(Чуть быстрее первого варианта). FPS = 1
         '''
         n, m = self.app.height, self.app.width
         masScreen = [[random.randint(1, 10) for j in range(m)] for i in range(n)]
@@ -52,14 +53,31 @@ class VoxelRender:
         
         #-------------------------------------------------------------------
         
+
+        # Вариант 3. Заполнение экрана случайными цветами каждого пиксела.
+        # FPS = 0.7
+        '''
+        for i in range(0, self.app.height):
+            for j in range(0, self.app.width):
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                color = (r, g, b)
+        
+                pg.draw.circle(self.app.screen, color, (j, i), 1)
+        '''
         
         
-        # Заполнение экрана случайными цветами случайно выбранного пиксела. Вариант 2.
-        # Быстрый способ.
+        # Заполнение экрана случайными цветами каждого пиксела. Вариант 4.
+        # Самый быстрый способ. FPS >= 59
         self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
+        # self.screen_array2 = np.random.randint(0, 255, size = self.screen_array.shape)
         #-------------------------------------------------------------------
         
     
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))
+        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 0))
+        
+
         
