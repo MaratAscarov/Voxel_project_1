@@ -71,7 +71,7 @@ class VoxelRender:
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 4.
         # Самый быстрый способ. FPS >= 59
         self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
-        # self.screen_array2 = np.random.randint(0, 255, size = self.screen_array.shape)
+        self.screen_array2 = np.random.randint(0, 255, 800 * 450)
         #-------------------------------------------------------------------
         
     
