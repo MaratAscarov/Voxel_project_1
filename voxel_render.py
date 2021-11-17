@@ -71,20 +71,28 @@ class VoxelRender:
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 4.
         # Самый быстрый способ. FPS >= 59
         self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
-        '''
+        
         self.screen_array2 = np.random.randint(0, 255, size = self.screen_array.shape)
-        r = self.screen_array2[:, :, 2]
-        g = self.screen_array2[:, :, 1]
-        b = self.screen_array2[:, :, 0]
-        g = (r + g + b) // 3
-        self.screen_array2[:, :, 2] = self.screen_array2[:, :, 1] = self.screen_array2[:, :, 0] = g
-        '''
+
+        for y in range(0, self.app.width):
+            for x in range(0, self.app.height):
+                for c in range(0, 3):
+                    r = self.screen_array2[y, x, 0]
+                    g = self.screen_array2[y, x, 1]
+                    b = self.screen_array2[y, x, 2]
+                    g = (r + g + b) // 3
+                    self.screen_array2[y, x, 0] = g
+                    self.screen_array2[y, x, 1] = g
+                    self.screen_array2[y, x, 2] = g
+
+
+        
         #-------------------------------------------------------------------
         
     
     def draw(self):
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (100, 100))  # Кординаты вывода x = 100 y = 100
-        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (200, 200))
+        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (100, 100))  # Кординаты вывода x = 100 y = 100
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 0))
         
 
         
