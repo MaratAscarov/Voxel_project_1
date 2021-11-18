@@ -11,6 +11,15 @@ color_map_img = pg.image.load('img/color_map.jpg')
 color_map = pg.surfarray.array3d(color_map_img)
 
 
+@njit(fastmath=True)
+def ray_casting(screen_array, screen_width, screen_height):
+    screen_array[:] = np.array([0, 0, 0])
+    for y in range(0, screen_height - 1):
+        for x in range(0, screen_width - 1):
+            screen_array[x, y] = color_map[x, y]
+
+
+
 class VoxelRender:
     def __init__(self, app):
         self.app = app
@@ -23,6 +32,7 @@ class VoxelRender:
         self.scale_height = 620
         self.screen_array = np.full((app.width - 500, app.height - 200, 3), (0, 0, 0))
         self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
+        self.screen_array3 = np.full((app.width, app.height, 3), (0, 0, 0))
         
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
@@ -102,11 +112,12 @@ class VoxelRender:
 
         
         #-------------------------------------------------------------------
-        
+        ray_casting(self.screen_array3, self.app.width, self.app.height)
     
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))  # Кординаты вывода x = 0 y = 0
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 0))
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))
         
 
         
