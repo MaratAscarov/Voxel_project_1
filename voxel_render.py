@@ -14,7 +14,7 @@ class VoxelRender:
         self.delta_angle = self.fov / self.num_rays
         self.ray_distance = 2000
         self.scale_height = 620
-        self.screen_array = np.full((app.width, app.height, 3), (0, 0, 0))
+        self.screen_array = np.full((app.width - 500, app.height - 200, 3), (0, 0, 0))
         self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
         
     
