@@ -4,6 +4,12 @@ from numba import njit
 import math
 import random
 
+height_map_img = pg.image.load('img/height_map.jpg')
+height_map = pg.surfarray.array3d(height_map_img)
+
+color_map_img = pg.image.load('img/color_map.jpg')
+color_map = pg.surfarray.array3d(color_map)
+
 class VoxelRender:
     def __init__(self, app):
         self.app = app
