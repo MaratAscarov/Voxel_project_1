@@ -8,7 +8,7 @@ height_map_img = pg.image.load('img/height_map.jpg')
 height_map = pg.surfarray.array3d(height_map_img)
 
 color_map_img = pg.image.load('img/color_map.jpg')
-color_map = pg.surfarray.array3d(color_map)
+color_map = pg.surfarray.array3d(color_map_img)
 
 
 class VoxelRender:
@@ -24,7 +24,6 @@ class VoxelRender:
         self.screen_array = np.full((app.width - 500, app.height - 200, 3), (0, 0, 0))
         self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
         
-    
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
         # Медленный способ.
