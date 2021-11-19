@@ -11,12 +11,13 @@ color_map_img = pg.image.load('img/color_map.jpg')
 color_map = pg.surfarray.array3d(color_map_img)
 
 
-@njit(fastmath=True)
+@njit(fastmath=True) # Увеличивает скорость выполнения многократно.
 def ray_casting(screen_array, screen_width, screen_height):
     screen_array[:] = np.array([0, 0, 0])
     for y in range(0, screen_height - 1):
         for x in range(0, screen_width - 1):
             screen_array[x, y] = color_map[x, y]
+            
 
 
 
