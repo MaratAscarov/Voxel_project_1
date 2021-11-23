@@ -13,10 +13,14 @@ color_map = pg.surfarray.array3d(color_map_img)
 
 @njit(fastmath=True) # Увеличивает скорость выполнения многократно.
 def ray_casting(screen_array, screen_width, screen_height):
+    
     screen_array[:] = np.array([0, 0, 0])
     for y in range(0, screen_height - 1):
         for x in range(0, screen_width - 1):
             screen_array[x, y] = color_map[x, y]
+    
+    # screen_array = np.random.randint(0, 255, size = screen_array.shape)
+    return screen_array
             
 
 
@@ -93,12 +97,13 @@ class VoxelRender:
         
         # Черно-белый шум  FPS = 40
         self.screen_array2 = np.random.randint(0, 255, size = self.screen_array2.shape)
-        # Цветные значения превращаем в черно-белые значения
+        # Быстрый способ преобразования. Цветные значения превращаем в черно-белые значения
         self.screen_array2[:, :, 0] = (self.screen_array2[:, :, 2] + self.screen_array2[:, :, 1] + self.screen_array2[:, :, 0]) // 3
         self.screen_array2[:, :, 1] = self.screen_array2[:, :, 0]
         self.screen_array2[:, :, 2] = self.screen_array2[:, :, 0]
         
         '''
+        # Медленный способ преобразования каждого элемента(элемент для цветного пиксела в черно-белый).
         for y in range(0, self.app.width):
             for x in range(0, self.app.height):
                 # for c in range(0, 3):
@@ -113,12 +118,12 @@ class VoxelRender:
 
         
         #-------------------------------------------------------------------
-        ray_casting(self.screen_array3, self.app.width, self.app.height)
+        self.screen_array3 = ray_casting(self.screen_array3, self.app.width, self.app.height)
     
     def draw(self):
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))  # Кординаты вывода x = 0 y = 0
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 0))
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 0))    # Черно-белый шум.
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
 
         
