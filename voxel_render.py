@@ -119,6 +119,7 @@ class VoxelRender:
         
         #-------------------------------------------------------------------
         self.screen_array3 = ray_casting(self.screen_array3, self.app.width, self.app.height)
+        
     
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
