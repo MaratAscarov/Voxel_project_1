@@ -29,6 +29,18 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
     screen_array[:] = np.array([0, 0, 0])
     y_buffer = np.full(screen_width, screen_height)
     
+    for numray in range(screen_width):
+        
+        
+        for depth in range(1, ray_distance):
+    
+    
+    
+    
+        
+        
+        
+        numray = numray + 1
     
     
     for y in range(0, screen_height - 1):
