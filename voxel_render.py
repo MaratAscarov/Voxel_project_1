@@ -10,7 +10,7 @@ height_map = pg.surfarray.array3d(height_map_img)
 color_map_img = pg.image.load('img/color_map.jpg')
 color_map = pg.surfarray.array3d(color_map_img)
 
-
+'''
 @njit(fastmath=True) # Увеличивает скорость выполнения многократно.
 def ray_casting(screen_array, screen_width, screen_height):
     
@@ -21,7 +21,21 @@ def ray_casting(screen_array, screen_width, screen_height):
     
     # screen_array = np.random.randint(0, 255, size = screen_array.shape)
     return screen_array
+'''
             
+@njit(fastmath=True) # Увеличивает скорость выполнения многократно.
+def ray_casting(screen_array, player_pos, player_angle, player_height, player_pitch, screen_width, screen_height, delta_angle, ray_distance, h_fov, scale_height):
+    
+    screen_array[:] = np.array([0, 0, 0])
+    y_buffer = np.full(screen_width, screen_height)
+    
+    
+    
+    for y in range(0, screen_height - 1):
+        for x in range(0, screen_width - 1):
+            screen_array[x, y] = color_map[x, y]
+    
+    return screen_array
 
 
 
