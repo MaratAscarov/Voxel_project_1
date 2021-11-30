@@ -35,7 +35,7 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
     for num_ray in range(screen_width):
         sin_a = math.sin(ray_angle)
         cos_a = math.cos(ray_angle)
-        first_contact = false
+        first_contact = False
         
         for depth in range(1, ray_distance):
             x = int(player_pos[0] + cos_a * depth)
@@ -153,7 +153,7 @@ class VoxelRender:
 
         
         #-------------------------------------------------------------------
-        self.screen_array3 = ray_casting(self.screen_array3, self.app.width, self.app.height)
+        self.screen_array = ray_casting(self.screen_array, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
     
     def draw(self):
