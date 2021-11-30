@@ -22,25 +22,34 @@ def ray_casting(screen_array, screen_width, screen_height):
     # screen_array = np.random.randint(0, 255, size = screen_array.shape)
     return screen_array
 '''
+
+map_height = len(height_map[0])
+map_width  = len(height_map)
             
 @njit(fastmath=True) # Увеличивает скорость выполнения многократно.
 def ray_casting(screen_array, player_pos, player_angle, player_height, player_pitch, screen_width, screen_height, delta_angle, ray_distance, h_fov, scale_height):
     
     screen_array[:] = np.array([0, 0, 0])
     y_buffer = np.full(screen_width, screen_height)
-    
-    for numray in range(screen_width):
-        
+    ray_angle = player_angle - h_fov
+    for num_ray in range(screen_width):
+        sin_a = math.sin(ray_angle)
+        cos_a = math.cos(ray_angle)
+        first_contact = false
         
         for depth in range(1, ray_distance):
-    
+            x = int(player_pos[0] + cos_a * depth)
+            if(0 < x < map_width):
+                y = int(player_pos[1] + sin_a * depth)
+                if(0 < y < map_height):
+                    depth *= math.cos(player_angle - ray_angle)
     
     
     
         
         
         
-        numray = numray + 1
+        ray_angle = ray_angle + delta_angle
     
     
     for y in range(0, screen_height - 1):
