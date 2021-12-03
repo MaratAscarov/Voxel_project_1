@@ -8,9 +8,7 @@ class App:
         self.screen = pg.display.set_mode(self.res)
         self.clock = pg.time.Clock()
         self.player = Player()
-        self.voxel_render = VoxelRender(self)
-        
-        
+        self.voxel_render = VoxelRender(self)        
         
     def update(self):
         self.player.update()

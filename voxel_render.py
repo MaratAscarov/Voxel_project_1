@@ -43,6 +43,20 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
                 y = int(player_pos[1] + sin_a * depth)
                 if(0 < y < map_height):
                     depth *= math.cos(player_angle - ray_angle)
+                    height_on_screen = int((player_height - height_map[x, y][0]) / depth * scale_height + player_pitch)
+                    
+                    if not first_contact:
+                        y_buffer[num_ray] = min(height_on_screen, screen_height)
+                        first_contact = True
+                        
+                    if height_on_screen < 0:
+                        height_on_screen = 0
+                        
+                    if height_on_screen < y_buffer[num_ray]:
+                        for screen_y in range(height_on_screen, y_buffer[num_ray]):
+                            screen_array[num_ray, screen_y] = color_map[x, y]
+                        y_buffer[num_ray] = height_on_screen
+                            
     
     
     
@@ -50,7 +64,7 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
         
         
         ray_angle = ray_angle + delta_angle
-    
+    return screen_array
     
     for y in range(0, screen_height - 1):
         for x in range(0, screen_width - 1):
@@ -64,15 +78,15 @@ class VoxelRender:
     def __init__(self, app):
         self.app = app
         self.player = app.player
-        self.fov = math.pi /3
+        self.fov = math.pi / 3
         self.h_fov = self.fov / 2
         self.num_rays = app.width
         self.delta_angle = self.fov / self.num_rays
         self.ray_distance = 2000
         self.scale_height = 620
-        self.screen_array = np.full((app.width - 500, app.height - 200, 3), (0, 0, 0))
-        self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
-        self.screen_array3 = np.full((app.width, app.height, 3), (0, 0, 0))
+        self.screen_array = np.full((app.width, app.height, 3), (0, 0, 0))
+        self.screen_array2 = np.full((300, 200, 3), (110, 110, 110))
+        # self.screen_array3 = np.full((app.width, app.height, 3), (0, 0, 0))
         
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
@@ -127,11 +141,12 @@ class VoxelRender:
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 4.
         # Самый быстрый способ. FPS >= 59
         # Цветной шум  FPS >= 59
-        self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
+        # self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
         
         
         # Черно-белый шум  FPS = 40
         self.screen_array2 = np.random.randint(0, 255, size = self.screen_array2.shape)
+        
         # Быстрый способ преобразования. Цветные значения превращаем в черно-белые значения
         self.screen_array2[:, :, 0] = (self.screen_array2[:, :, 2] + self.screen_array2[:, :, 1] + self.screen_array2[:, :, 0]) // 3
         self.screen_array2[:, :, 1] = self.screen_array2[:, :, 0]
@@ -158,8 +173,8 @@ class VoxelRender:
     
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 0))    # Черно-белый шум.
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
+        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 250))    # Черно-белый шум.
+        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
 
         
