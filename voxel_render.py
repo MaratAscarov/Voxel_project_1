@@ -55,12 +55,7 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
                     if height_on_screen < y_buffer[num_ray]:
                         for screen_y in range(height_on_screen, y_buffer[num_ray]):
                             screen_array[num_ray, screen_y] = color_map[x, y]
-                        y_buffer[num_ray] = height_on_screen
-                            
-    
-    
-    
-        
+                        y_buffer[num_ray] = height_on_screen    
         
         
         ray_angle = ray_angle + delta_angle
