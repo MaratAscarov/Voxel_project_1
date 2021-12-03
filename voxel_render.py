@@ -80,7 +80,8 @@ class VoxelRender:
         self.ray_distance = 2000
         self.scale_height = 620
         self.screen_array = np.full((app.width, app.height, 3), (0, 0, 0))
-        self.screen_array2 = np.full((300, 200, 3), (110, 110, 110))
+        # self.screen_array2 = np.full((300, 200, 3), (110, 110, 110))
+        self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
         # self.screen_array3 = np.full((app.width, app.height, 3), (0, 0, 0))
         
     def update(self):
@@ -139,13 +140,21 @@ class VoxelRender:
         # self.screen_array = np.random.randint(0, 255, size = self.screen_array.shape)
         
         
-        # Черно-белый шум  FPS = 40
-        self.screen_array2 = np.random.randint(0, 255, size = self.screen_array2.shape)
-        
-        # Быстрый способ преобразования. Цветные значения превращаем в черно-белые значения
-        self.screen_array2[:, :, 0] = (self.screen_array2[:, :, 2] + self.screen_array2[:, :, 1] + self.screen_array2[:, :, 0]) // 3
-        self.screen_array2[:, :, 1] = self.screen_array2[:, :, 0]
-        self.screen_array2[:, :, 2] = self.screen_array2[:, :, 0]
+        showBackScreen = 0;
+        if random.randint(0, 2000) < 200:
+            # Имитируем помехи на экране заднего вида
+            showBackScreen = 0
+            # Черно-белый шум  FPS = 40
+            self.screen_array2 = np.random.randint(0, 255, size = self.screen_array2.shape)
+            
+            # Быстрый способ преобразования. Цветные значения превращаем в черно-белые значения
+            self.screen_array2[:, :, 0] = (self.screen_array2[:, :, 2] + self.screen_array2[:, :, 1] + self.screen_array2[:, :, 0]) // 3
+            self.screen_array2[:, :, 1] = self.screen_array2[:, :, 0]
+            self.screen_array2[:, :, 2] = self.screen_array2[:, :, 0]
+        else:
+            # Показываем экран заднего вида без помех
+            showBackScreen = 1
+            
         
         '''
         # Медленный способ преобразования каждого элемента(элемент для цветного пиксела в черно-белый).
@@ -165,10 +174,18 @@ class VoxelRender:
         #-------------------------------------------------------------------
         self.screen_array = ray_casting(self.screen_array, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
+        # Камера заднего вида
+        if showBackScreen == 1:
+            self.screen_array2 = ray_casting(self.screen_array2, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
+        
     
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
-        self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (450, 250))    # Черно-белый шум.
+        back_screen = pg.surfarray.make_surface(self.screen_array2)
+        back_screen = pg.transform.scale(back_screen, (200, 150))
+        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
+        self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
+        
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
 
