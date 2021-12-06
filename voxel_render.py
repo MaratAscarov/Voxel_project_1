@@ -60,12 +60,62 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
         
         ray_angle = ray_angle + delta_angle
     return screen_array
-    
+    '''
     for y in range(0, screen_height - 1):
         for x in range(0, screen_width - 1):
             screen_array[x, y] = color_map[x, y]
     
     return screen_array
+    '''
+
+
+@njit(fastmath=True) # Увеличивает скорость выполнения многократно.
+def ray_casting_object(screen_array, object_pos, player_pos, player_angle, player_height, player_pitch, screen_width, screen_height, delta_angle, ray_distance, h_fov, scale_height):
+    
+    # object_to_screen_1 = np.array([0, 0], dtype = float)
+    # screen_array[:] = np.array([0, 0, 0])
+    # y_buffer = np.full(screen_width, screen_height)
+    ray_angle = player_angle - h_fov
+    
+    
+    for num_ray in range(screen_width):
+        sin_a = math.sin(ray_angle)
+        cos_a = math.cos(ray_angle)
+        first_contact = False
+        
+        for depth in range(1, ray_distance):
+            x = int(player_pos[0] + cos_a * depth)
+            if(0 < x < map_width):
+                y = int(player_pos[1] + sin_a * depth)
+                if(0 < y < map_height):
+                    depth *= math.cos(player_angle - ray_angle)
+                    height_on_screen = int((player_height - height_map[x, y][0]) / depth * scale_height + player_pitch)
+                    
+                    if((int(object_pos[0]) == int(x)) and (int(object_pos[1]) == int(y))):
+                        # object_to_screen_1[0] = num_ray
+                        # object_to_screen_1[1] = screen_height // 2
+                        for screen_x in range(int((num_ray - 50) / depth), int((num_ray + 50) / depth)):
+                            for screen_y in range(screen_height // 2 - 5, screen_height // 2 + 5):
+                                screen_array[screen_x, screen_y] = (100, 200, 255)
+                        break
+                    '''
+                    if not first_contact:
+                        y_buffer[num_ray] = min(height_on_screen, screen_height)
+                        first_contact = True
+                        
+                    if height_on_screen < 0:
+                        height_on_screen = 0
+                        
+                    if height_on_screen < y_buffer[num_ray]:
+                        for screen_y in range(height_on_screen, y_buffer[num_ray]):
+                            screen_array[num_ray, screen_y] = color_map[x, y]
+                        y_buffer[num_ray] = height_on_screen    
+                    '''
+        
+        ray_angle = ray_angle + delta_angle
+    # return object_to_screen
+    return screen_array
+    
 
 
 
@@ -83,6 +133,12 @@ class VoxelRender:
         # self.screen_array2 = np.full((300, 200, 3), (110, 110, 110))
         self.screen_array2 = np.full((app.width, app.height, 3), (110, 110, 110))
         # self.screen_array3 = np.full((app.width, app.height, 3), (0, 0, 0))
+        
+        self.object_1 = np.array([0, 0], dtype = float)
+        self.object_1[0] = 0
+        self.object_1[1] = 0
+        self.x_o = 150
+        self.y_o = 50
         
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
@@ -178,7 +234,23 @@ class VoxelRender:
         if showBackScreen == 1:
             self.screen_array2 = ray_casting(self.screen_array2, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
-    
+        
+        
+        print('self.player.pos: x = ' + str(self.player.pos[0]) + '  y = ' + str(self.player.pos[1]))
+        print('  self.object_1: x = ' + str(self.object_1[0]) + '  y = ' + str(self.object_1[1]))
+        
+        # Рисуем движущийся объект
+        self.object_1[0] = int(self.x_o)
+        self.object_1[1] = int(self.y_o)
+        '''
+        if self.x_o < 450:
+            self.x_o = self.x_o + 0.2
+        '''    
+        if self.y_o < 450:
+            self.y_o = self.y_o + 0.2
+        
+        self.screen_array = ray_casting_object(self.screen_array, self.object_1, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
+        
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
         back_screen = pg.surfarray.make_surface(self.screen_array2)
