@@ -77,6 +77,8 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
     # y_buffer = np.full(screen_width, screen_height)
     ray_angle = player_angle - h_fov
     
+    flagBreak = False
+    numRayRet = 0
     
     for num_ray in range(screen_width):
         sin_a = math.sin(ray_angle)
@@ -94,9 +96,12 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
                     if((int(object_pos[0]) == int(x)) and (int(object_pos[1]) == int(y))):
                         # object_to_screen_1[0] = num_ray
                         # object_to_screen_1[1] = screen_height // 2
+                        '''
                         for screen_x in range(int((num_ray - 50) / depth), int((num_ray + 50) / depth)):
                             for screen_y in range(screen_height // 2 - 5, screen_height // 2 + 5):
                                 screen_array[screen_x, screen_y] = (100, 200, 255)
+                        '''        
+                        flagBreak = True        
                         break
                     '''
                     if not first_contact:
@@ -111,9 +116,12 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
                             screen_array[num_ray, screen_y] = color_map[x, y]
                         y_buffer[num_ray] = height_on_screen    
                     '''
-        
+        if flagBreak == True:
+            numRayRet = num_ray
+            break
         ray_angle = ray_angle + delta_angle
     # return object_to_screen
+    # return screen_array
     return screen_array
     
 
