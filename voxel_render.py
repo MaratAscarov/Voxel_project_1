@@ -78,7 +78,7 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
     ray_angle = player_angle - h_fov
     
     flagBreak = False
-    numRayRet = 0
+    numRayRet = -1000
     
     for num_ray in range(screen_width):
         sin_a = math.sin(ray_angle)
@@ -92,7 +92,6 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
                 if(0 < y < map_height):
                     depth *= math.cos(player_angle - ray_angle)
                     height_on_screen = int((player_height - height_map[x, y][0]) / depth * scale_height + player_pitch)
-                    
                     if((int(object_pos[0]) == int(x)) and (int(object_pos[1]) == int(y))):
                         # object_to_screen_1[0] = num_ray
                         # object_to_screen_1[1] = screen_height // 2
@@ -122,7 +121,7 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
         ray_angle = ray_angle + delta_angle
     # return object_to_screen
     # return screen_array
-    return screen_array
+    return numRayRet
     
 
 
@@ -147,6 +146,8 @@ class VoxelRender:
         self.object_1[1] = 0
         self.x_o = 150
         self.y_o = 50
+        
+        self.x_object = 0
         
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
@@ -246,10 +247,13 @@ class VoxelRender:
         
         print('self.player.pos: x = ' + str(self.player.pos[0]) + '  y = ' + str(self.player.pos[1]))
         print('  self.object_1: x = ' + str(self.object_1[0]) + '  y = ' + str(self.object_1[1]))
+        print('  ==self.x_object_to_screen: x = ' + str(self.x_object))
         
         # Рисуем движущийся объект
-        self.object_1[0] = int(self.x_o)
-        self.object_1[1] = int(self.y_o)
+        # self.object_1[0] = int(self.x_o)
+        # self.object_1[1] = int(self.y_o)
+        self.object_1[1] = int(self.x_o)
+        self.object_1[0] = int(self.y_o)
         '''
         if self.x_o < 450:
             self.x_o = self.x_o + 0.2
@@ -257,7 +261,7 @@ class VoxelRender:
         if self.y_o < 450:
             self.y_o = self.y_o + 0.2
         
-        self.screen_array = ray_casting_object(self.screen_array, self.object_1, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
+        self.x_object = ray_casting_object(self.screen_array, self.object_1, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
@@ -265,6 +269,9 @@ class VoxelRender:
         back_screen = pg.transform.scale(back_screen, (200, 150))
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
         self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
+        
+        # Вывод объекта
+        pg.draw.circle(self.app.screen,(255, 255, 0), (self.x_object, 250), 25)
         
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
