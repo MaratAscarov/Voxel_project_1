@@ -70,7 +70,7 @@ def ray_casting(screen_array, player_pos, player_angle, player_height, player_pi
 
 
 @njit(fastmath=True) # Увеличивает скорость выполнения многократно.
-def ray_casting_object(screen_array, object_pos, player_pos, player_angle, player_height, player_pitch, screen_width, screen_height, delta_angle, ray_distance, h_fov, scale_height):
+def ray_casting_object(object_pos, player_pos, player_angle, player_height, player_pitch, screen_width, screen_height, delta_angle, ray_distance, h_fov, scale_height):
     
     # object_to_screen_1 = np.array([0, 0], dtype = float)
     # screen_array[:] = np.array([0, 0, 0])
@@ -94,8 +94,6 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
                     depth *= math.cos(player_angle - ray_angle)
                     # height_on_screen = int((player_height - height_map[x, y][0]) / depth * scale_height + player_pitch)
                     if((int(object_pos[0]) == int(x)) and (int(object_pos[1]) == int(y))):
-                        # object_to_screen_1[0] = num_ray
-                        # object_to_screen_1[1] = screen_height // 2
                         '''
                         for screen_x in range(int((num_ray - 50) / depth), int((num_ray + 50) / depth)):
                             for screen_y in range(screen_height // 2 - 5, screen_height // 2 + 5):
@@ -121,8 +119,6 @@ def ray_casting_object(screen_array, object_pos, player_pos, player_angle, playe
             numRayRet = num_ray
             break
         ray_angle = ray_angle + delta_angle
-    # return object_to_screen
-    # return screen_array
     return numRayRet, deltaRet
     
 
@@ -252,15 +248,14 @@ class VoxelRender:
             self.screen_array2 = ray_casting(self.screen_array2, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
         
-        
+        '''
         print('self.player.pos: x = ' + str(self.player.pos[0]) + '  y = ' + str(self.player.pos[1]) + '  angle = ' + str(self.player.angle))
         print('  self.object_1: x = ' + str(self.object_1[0]) + '  y = ' + str(self.object_1[1]))
         print('  ==self.x_object_to_screen: x = ' + str(self.x_object))
         print('  ==self.deltaToObject = ' + str(self.deltaToObject))
+        '''
         
         # Рисуем движущийся объект
-        # self.object_1[0] = int(self.x_o)
-        # self.object_1[1] = int(self.y_o)
         self.object_1[0] = int(self.x_o)
         self.object_1[1] = int(self.y_o)
         
@@ -279,7 +274,7 @@ class VoxelRender:
 
         self.y_o = self.y_o + self.dy
         
-        self.x_object, self.deltaToObject = ray_casting_object(self.screen_array, self.object_1, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
+        self.x_object, self.deltaToObject = ray_casting_object(self.object_1, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
