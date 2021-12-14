@@ -150,6 +150,8 @@ class VoxelRender:
         
         self.x_object = 0
         self.deltaToObject = 0
+        self.x_object_back = 0
+        self.deltaToObject_back = 0
         
         
         
@@ -275,14 +277,15 @@ class VoxelRender:
         self.y_o = self.y_o + self.dy
         
         self.x_object, self.deltaToObject = ray_casting_object(self.object_1, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
+        self.x_object_back, self.deltaToObject_back = ray_casting_object(self.object_1, self.player.pos, self.player.angle - 3.14, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
         back_screen = pg.surfarray.make_surface(self.screen_array2)
-        back_screen = pg.transform.scale(back_screen, (200, 150))
         # Вывод объекта на заднем экране
-        if self.deltaToObject > 0:
-            pg.draw.circle(back_screen,(255, 255, 0), (self.x_object, 250), self.app.width // 3 - self.deltaToObject)
+        if self.deltaToObject_back > 0:
+            pg.draw.circle(back_screen,(255, 255, 0), (self.x_object_back, 250), self.app.width // 3 - self.deltaToObject_back)
+        back_screen = pg.transform.scale(back_screen, (200, 150))
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
         self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
         
