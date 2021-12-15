@@ -266,8 +266,7 @@ class VoxelRender:
         if self.x_o < 0:
             self.dx = -self.dx
             
-        self.x_o = self.x_o + self.dx
-            
+        self.x_o = self.x_o + self.dx            
         
         if self.y_o > 400:
             self.dy = -self.dy
