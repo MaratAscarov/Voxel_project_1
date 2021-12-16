@@ -154,6 +154,7 @@ class VoxelRender:
         self.deltaToObject_back = 0
         
         
+        
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
         # Медленный способ.
