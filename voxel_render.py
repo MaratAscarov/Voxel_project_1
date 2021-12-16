@@ -154,7 +154,6 @@ class VoxelRender:
         self.deltaToObject_back = 0
         
         
-        
     def update(self):
         # Заполнение экрана случайными цветами каждого пиксела. Вариант 1.
         # Медленный способ.
@@ -248,7 +247,7 @@ class VoxelRender:
         # Камера заднего вида
         if showBackScreen == 1:
             self.screen_array2 = ray_casting(self.screen_array2, self.player.pos, self.player.angle - math.pi, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
-        
+
         
         '''
         print('self.player.pos: x = ' + str(self.player.pos[0]) + '  y = ' + str(self.player.pos[1]) + '  angle = ' + str(self.player.angle))
