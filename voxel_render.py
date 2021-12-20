@@ -151,8 +151,7 @@ class VoxelRender:
         self.x_object = 0
         self.deltaToObject = 0
         self.x_object_back = 0
-        self.deltaToObject_back = 0
-        
+        self.deltaToObject_back = 0        
         
         
     def update(self):
