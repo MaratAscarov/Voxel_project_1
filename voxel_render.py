@@ -224,8 +224,7 @@ class VoxelRender:
             self.screen_array2[:, :, 2] = self.screen_array2[:, :, 0]
         else:
             # Показываем экран заднего вида без помех
-            showBackScreen = 1
-            
+            showBackScreen = 1            
         
         '''
         # Медленный способ преобразования каждого элемента(элемент для цветного пиксела в черно-белый).
