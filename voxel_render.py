@@ -270,7 +270,7 @@ class VoxelRender:
         if self.y_o < 0:
             self.dy = -self.dy
 
-        self.y_o = self.y_o + self.dy
+        # self.y_o = self.y_o + self.dy
         
         self.x_object, self.deltaToObject = ray_casting_object(self.object_1, self.player.pos, self.player.angle, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
         self.x_object_back, self.deltaToObject_back = ray_casting_object(self.object_1, self.player.pos, self.player.angle - 3.14, self.player.height, self.player.pitch, self.app.width, self.app.height, self.delta_angle, self.ray_distance, self.h_fov, self.scale_height)
