@@ -277,13 +277,6 @@ class VoxelRender:
         
     def draw(self):
         self.app.screen.blit(pg.surfarray.make_surface(self.screen_array), (0, 0))       # Цветной шум. Кординаты вывода x = 0 y = 0
-        back_screen = pg.surfarray.make_surface(self.screen_array2)
-        # Вывод объекта на заднем экране
-        if self.deltaToObject_back > 0:
-            pg.draw.circle(back_screen,(255, 255, 0), (self.x_object_back, 250), self.app.width // 3 - self.deltaToObject_back)
-        back_screen = pg.transform.scale(back_screen, (200, 150))
-        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
-        self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
         
         # Вывод объекта
         if self.deltaToObject > 0:
@@ -291,5 +284,12 @@ class VoxelRender:
         
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
+        back_screen = pg.surfarray.make_surface(self.screen_array2)
+        # Вывод объекта на заднем экране
+        if self.deltaToObject_back > 0:
+            pg.draw.circle(back_screen,(255, 255, 0), (self.x_object_back, 250), self.app.width // 3 - self.deltaToObject_back)
+        back_screen = pg.transform.scale(back_screen, (200, 150))
+        # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
+        self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
 
         
