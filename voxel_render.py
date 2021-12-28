@@ -290,6 +290,7 @@ class VoxelRender:
         if self.deltaToObject > 0:
             pg.draw.circle(self.app.screen,(255, 255, 0), (self.x_object, 250), self.app.width // 3 - self.deltaToObject)
         
+        
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array3), (250, 100))  # Рендеринг изображения.
         
 
