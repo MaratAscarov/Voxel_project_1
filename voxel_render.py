@@ -285,6 +285,7 @@ class VoxelRender:
         back_screen = pg.transform.scale(back_screen, (200, 150))
         # self.app.screen.blit(pg.surfarray.make_surface(self.screen_array2), (0, 250))    # Черно-белый шум.
         self.app.screen.blit(back_screen, (50, 250))    # Черно-белый шум.
+
         
         # Вывод объекта
         if self.deltaToObject > 0:
